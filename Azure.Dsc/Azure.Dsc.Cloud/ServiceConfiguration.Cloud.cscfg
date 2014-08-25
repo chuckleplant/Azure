@@ -4,6 +4,10 @@
     <Instances count="1" />
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Sogeti.WindowsAzure.Plugins.DesiredStateConfiguration.PullServerDnsName" value="&lt;dns-name&gt;.cloudapp.net" />
+      <Setting name="ConfigurationStorageConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="ConfigurationServiceBusConnectionString" value="&lt;sb-connectionstring&gt;" />
+      <Setting name="ConfigurationTopic" value="configuration" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

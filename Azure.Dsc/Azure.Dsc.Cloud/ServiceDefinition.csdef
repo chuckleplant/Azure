@@ -1,8 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServiceDefinition name="Azure.Dsc.Cloud" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2014-06.2.4">
   <WorkerRole name="Azure.Dsc.Server" vmsize="Small">
+    <Startup>
+      <Task executionContext="elevated" taskType="simple" commandLine="DscService\New-DscPullServer.cmd">
+        <Environment>
+          <Variable name="SubjectName">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='Sogeti.WindowsAzure.Plugins.DesiredStateConfiguration.PullServerDnsName']/@value" />
+          </Variable>
+          <Variable name="IsEmulated">
+            <RoleInstanceValue xpath="/RoleEnvironment/Deployment/@emulated" />
+          </Variable>
+        </Environment>
+      </Task>
+    </Startup>
+    <Runtime executionContext="elevated" />
     <Imports>
       <Import moduleName="Diagnostics" />
     </Imports>
+    <ConfigurationSettings>
+      <Setting name="Sogeti.WindowsAzure.Plugins.DesiredStateConfiguration.PullServerDnsName" />
+      <Setting name="ConfigurationStorageConnectionString" />
+      <Setting name="ConfigurationServiceBusConnectionString" />
+      <Setting name="ConfigurationTopic" />
+    </ConfigurationSettings>
+    <LocalResources>
+      <LocalStorage name="Temp" cleanOnRoleRecycle="true" sizeInMB="2000" />
+    </LocalResources>
   </WorkerRole>
 </ServiceDefinition>

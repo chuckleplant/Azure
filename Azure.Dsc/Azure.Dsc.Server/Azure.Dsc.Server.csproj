@@ -80,7 +80,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="DscService\Import-DscModules.ps1" />
+    <None Include="DscService\New-DscPullServer.cmd" />
+    <None Include="DscService\New-DscPullServer.ps1" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Azure.Dsc.Common\Azure.Dsc.Common.csproj">
+      <Project>{B359295A-1C52-402D-B9CC-A3ADBE2A364F}</Project>
+      <Name>Azure.Dsc.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
