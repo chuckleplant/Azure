@@ -1,8 +1,7 @@
 ﻿using System.IO;
 using System.Security.Cryptography.X509Certificates;
-using Azure.Dsc.Common.Security;
 
-namespace Sogeti.IaC.Common.Security
+namespace Azure.Dsc.Common.Security
 {
     public class CertificateInstaller
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Sogeti.IaC.Common.Logging
+namespace Azure.Dsc.Common.Logging
 {
     public static class Logger
     {

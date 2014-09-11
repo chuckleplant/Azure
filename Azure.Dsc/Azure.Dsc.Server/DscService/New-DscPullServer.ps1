@@ -2,7 +2,7 @@ Param([string]$SubjectName = "dscpullserver.cloudapp.net")
 
 Import-Module -Name xPSDesiredStateConfiguration -Force -Verbose
 
-Configuration Sogeti_DscWebService 
+Configuration Azure_DscWebService 
 { 
     param ( 
         [string[]]$NodeName = 'localhost', 
@@ -74,13 +74,11 @@ Configuration Sogeti_DscWebService
 
 $x509 = Get-ChildItem Cert:\LocalMachine\My | Where Subject -Eq "CN=$SubjectName"
 
-Sogeti_DscWebService -certificateThumbPrint $x509.Thumbprint -OutputPath .
+Azure_DscWebService -certificateThumbPrint $x509.Thumbprint -OutputPath $PSScriptRoot\Azure_DscWebService
 
-Start-DscConfiguration -wait -Verbose -ComputerName localhost -Path .\Sogeti_DscWebService
+Start-DscConfiguration -wait -Verbose -ComputerName localhost -Path $PSScriptRoot\Azure_DscWebService
 
 $ipAddress = Get-NetIPAddress -AddressFamily IPv4 -PrefixOrigin Dhcp | Select -ExpandProperty IPAddress
 
 Invoke-Expression -Command "netsh http delete urlacl https://$($ipAddress):8080/"
 Invoke-Expression -Command "netsh http delete urlacl http://$($ipAddress):9080/"
-
-Copy-Item -Path "$env:ROLEROOT\approot\DscService\Modules\*" -Exclude "*.zip" -Recurse -Destination "$env:ProgramFiles\WindowsPowerShell\DscService\Modules" -Force

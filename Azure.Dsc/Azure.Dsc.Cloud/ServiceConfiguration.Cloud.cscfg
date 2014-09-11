@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ServiceConfiguration serviceName="Azure.Dsc.Cloud" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2014-06.2.4">
   <Role name="Azure.Dsc.Server">
-    <Instances count="1" />
+    <Instances count="2" />
     <ConfigurationSettings>
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
-      <Setting name="Sogeti.WindowsAzure.Plugins.DesiredStateConfiguration.PullServerDnsName" value="&lt;dns-name&gt;.cloudapp.net" />
-      <Setting name="ConfigurationStorageConnectionString" value="UseDevelopmentStorage=true" />
-      <Setting name="ConfigurationServiceBusConnectionString" value="&lt;sb-connectionstring&gt;" />
-      <Setting name="ConfigurationTopic" value="configuration" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=[account-name];AccountKey=[account-key]" />
+      <Setting name="ConfigurationServiceBusConnectionString" value="Endpoint=sb://[sb-namespace].servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=[key]" />
+      <Setting name="ConfigurationStorageConnectionString" value="DefaultEndpointsProtocol=https;AccountName=[account-name];AccountKey=[account-key]" />
+      <Setting name="ConfigurationSubscriptionPrefix" value="" />
+      <Setting name="Azure.Plugins.DesiredStateConfiguration.PullServerDnsName" value="azure-dsc.cloudapp.net" />
+      <Setting name="ConfigurationTopic" value="ConfigurationUpdates" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="[username]" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEHvvgKbEgGOJRhw2Fap2F/IwDQYJKoZIhvcNAQEBBQAEggEAL0o1s9AeNRF5yESPwxckgJlxE4oerNs8RHv4gVLrW4vh9xTGvvbp0SMqlQ9oWQl+GVF6o9g0pNs7ec7DYDGJ+cKFCUomLgYsJpFrkoxAbVsi+5W8+KD3K2f99ZSmzk3SK+ZqGuvAbLW41RrF7bSRNXysUri58UIXcXuSJ4O/ejykRn9nEye30LYQSrWBK6cMaOwpyTb+7uPz+ozyulIga7vGSI/v6pDgE95WHQS1gbdriIMYLDP5H6KNyCSSSFWfkoaInjhEfqyOFUpPSF/A8N8+eWSiI2jC+bfva4ew345efkvV9xdfHpTKLc/oROoC9QsDXtw0q1VCX3KTMYGhZzAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECFPBA/0eH45TgBBlSV2bib1mbRj/NYZut8/m" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2015-09-11T23:59:59.0000000+02:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
     </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="DscServiceSSL" thumbprint="36B9E76AA08AF3B4BDE87814CDBC9A4B6560EF52" thumbprintAlgorithm="sha1" />
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="4E1E515D5B137BB1184A0183BD692CF6F5F9A711" thumbprintAlgorithm="sha1" />
+    </Certificates>
   </Role>
 </ServiceConfiguration>

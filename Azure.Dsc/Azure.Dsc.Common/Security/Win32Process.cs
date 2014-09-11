@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 
-namespace Sogeti.IaC.Common.Security
+namespace Azure.Dsc.Common.Security
 {
     public class Win32Process
     {

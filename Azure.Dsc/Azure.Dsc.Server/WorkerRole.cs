@@ -1,7 +1,10 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
 using System.Net;
+using System.Reflection;
 using System.Threading;
 using Azure.Dsc.Common.DesiredStateConfiguration;
 using Azure.Dsc.Common.Security;
@@ -11,8 +14,6 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
-using Sogeti.IaC.Common.Security;
-using Sogeti.IaC.Model.DesiredStateConfiguration;
 
 namespace Azure.Dsc.Server
 {
@@ -24,7 +25,7 @@ namespace Azure.Dsc.Server
         public override void Run()
         {
             // This is a sample worker implementation. Replace with your logic.
-            Trace.TraceInformation("Sogeti.IaC.DscPullServer entry point called");
+            Trace.TraceInformation("Azure.Dsc.PullServer entry point called");
 
             while (true)
             {
@@ -72,7 +73,45 @@ namespace Azure.Dsc.Server
 
             InitializeStorage();
 
+            StartConfiguration();
+
             return base.OnStart();
+        }
+
+        private void StartConfiguration()
+        {
+            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            UriBuilder uri = new UriBuilder(codeBase);
+            string assemblyPath = Uri.UnescapeDataString(uri.Path);
+
+            string scriptFile = Path.GetDirectoryName(assemblyPath) + @"\DscService\New-DscPullServer.ps1";
+            try
+            {
+                var initialSessionState = InitialSessionState.CreateDefault();
+                initialSessionState.UseFullLanguageModeInDebugger = true;
+                initialSessionState.LanguageMode = PSLanguageMode.FullLanguage;
+                initialSessionState.ApartmentState = ApartmentState.STA;
+                using (var runspace = RunspaceFactory.CreateRunspace(initialSessionState))
+                {
+                    var command = new Command(scriptFile);
+                    command.Parameters.Add("SubjectName", CloudConfigurationManager.GetSetting("Azure.Plugins.DesiredStateConfiguration.PullServerDnsName"));
+
+                    runspace.Open();
+
+                    var pipeline = runspace.CreatePipeline();
+                    pipeline.Commands.Add(command);
+
+                    var results = pipeline.Invoke();
+                    foreach (var result in results)
+                    {
+                        Trace.TraceInformation(@"PS Output: {0}", result);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.Logging.Logger.Log(Guid.NewGuid(), ex);
+            }
         }
 
         private void InitializeStorage()

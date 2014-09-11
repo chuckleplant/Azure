@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using Microsoft.WindowsAzure;
-using Sogeti.IaC.Common.Security;
 
 namespace Azure.Dsc.Common.Security
 {

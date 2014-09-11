@@ -5,7 +5,7 @@ using System.Security.Principal;
 using Microsoft.Win32;
 using Microsoft.Win32.SafeHandles;
 
-namespace Sogeti.IaC.Common.Security
+namespace Azure.Dsc.Common.Security
 {
     public class Win32Logon : IDisposable
     {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using Sogeti.IaC.Common.Security;
 
 namespace Azure.Dsc.Common.Security
 {
